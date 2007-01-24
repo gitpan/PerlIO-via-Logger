@@ -1,5 +1,10 @@
 Revision history for PerlIO-via-Logger
 
-0.01    Date/time
-        First version, released on an unsuspecting world.
+0.02    Jan 24, 2007
+				Stripped out funky code form logify. It now uses binmode() to insert
+				  the layer gracefully... sans funk.
+				Clarified a few points of the POD
+
+0.01    Jan 24, 2007
+        Initial version, released on an unsuspecting world. Muhaha.
 

@@ -1,6 +1,13 @@
+# Perl I/O Layer for Logging
+#
+# Author: Adam J Kaplan
+# Email: akaplan@cpan.org
+# 
+# This script is distributed under the same license as Perl itself.
+#
 package PerlIO::via::Logger;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 use strict;
 use warnings;
 use POSIX qw(strftime);
@@ -71,14 +78,15 @@ sub FILL {
     undef;
 } #FILL
 
-sub logify {
-	my $fh = shift||return;
+#-----------------------------------------------------------------------
+#  IN: 1 Valid file handle GLOB
+#			 2 Optional output. Default is to insert the io layer in place
+# OUT: 1 undef
 
-	open my $old, ">&", $fh;
-	close $fh;
-	open ($fh, ">&via(Logger)", $old)
-			or die "Unable to logify handle: $!\n";
-	undef;
+sub logify {
+		my $fh = shift||return;
+		binmode($fh, ":via(Logger)");
+		undef;
 }
 
 
@@ -144,20 +152,22 @@ PerlIO::via::Logger - PerlIO layer for prefixing current time to log output
 =head1 DESCRIPTION
 
 This module implements a PerlIO layer that prefixes the current time to each
-line of output or input.  This module was created because I frequently use
-file logging systems in daemon-style Perl systems.  This module was created to
-fulfill my requirements:
+line of output or input.  This module was created because I frequently need to
+use file logging systems in daemon-style Perl systems.  This module was created 
+to fulfill three requirements:
 
-=item 1. Must be low overhead/fast
-=item 2. Must be extremely simple to use (i.e. print "something to log\n")"
-=item 3. Must be able to add a prefix to each line (namely time)
+=over 4
+=item 1. 
+Must be low overhead/fast
+=item 2. 
+Must be extremely simple to use (i.e. print "something to log\n")"
+=item 3. 
+Must be able to add a prefix to each line (namely time)
+=back
 
-Note: the format string accepts the format specification of strftime(3) on your
-system.  You may use the command "man 3 strftime" to view the system-specific
-behavior, or try this one: 
-
-http://www.hmug.org/man/3/strftime.php
-
+I<Note: the format string accepts the format specification of strftime(3) on 
+your system.  You may use the command "man 3 strftime" to view the system-
+specific behavior, or try this one: http://www.hmug.org/man/3/strftime.php>
  
 =head1 CLASS METHODS
 
@@ -180,11 +190,11 @@ using C<binmode()>) B<after> they have been changed.
  PerlIO::via::Logger->format( '[%b %d, %Y %r] ' );
  my $format = PerlIO::via::Logger->format;
 
-The class method "format" returns the format that will be used for adding
+The class method C<format> returns the format that will be used for adding
 the time to lines.  The optional input parameter specifies the format that will
 be used for any files that are opened in the future.  You should use only the 
 conversion specifiers defined by the ANSI C standard (C89, to play safe). These 
-are aAbBcdHIjmMpSUwWxXyYZ% .  The default is '[%b %d, %Y %H:%M:%S] ', though
+are aAbBcdHIjmMpSUwWxXyYZ% .  The default is C<'[%b %d, %Y %H:%M:%S] '>, though
 the examples throughout this document use a more elegant - but less portable -
 format.
 
@@ -194,28 +204,28 @@ format.
  PerlIO::via::Logger::logify( *WRITEFH );
  PerlIO::via::Logger::logify( *STDOUT );
 
-The class method "logify" exists purely for convenience and my personal use.
-I do not recommend using it unless your systems are for development only, or
-you understand how it works. In short it will reopen the given filehandle 
+The class method C<logify> exists purely for convenience and my personal use.
+B<I do not recommend using it unless your systems are for development only, or
+you understand how it works.> In short it will reopen the given filehandle 
 through the Logger I/O layer.
 
 =head2 FILL 
 
  PerlIO::via::Logger->FILL()
 
-This method is required for PerlIO modules.  Do NOT use it unless you know
-what you are doing.
+I<This method is required for PerlIO modules.  Do NOT use it unless you know
+what you are doing.>
 
 =head2 PUSHED
 
  PerlIO::via::Logger->PUSHED()
 
-This method is required for PerlIO modules.  Do NOT use it unless you know
-what you are doing.
+I<This method is required for PerlIO modules.  Do NOT use it unless you know
+what you are doing.>
  
 =head1 REQUIRED MODULES
 
- POSIX
+L<POSIX>
 
 =head1 EXAMPLES
 
@@ -224,12 +234,13 @@ Here are some examples for your reading pleasure:
 =head2 Sending STDOUT to a log file
 
 The following code redirects STDOUT through the Logger without using logify()
+Note the use of >&: instead of >: because this is a filehandle glob.
 
  #!/usr/bin/perl
  use PerlIO::via::Logger;
  open my $stdout, ">&STDOUT";
  close STDOUT;
- open (STDOUT, ">&via(Logger)", $stdout)
+ open (STDOUT, ">&:via(Logger)", $stdout)
    or die "Unable to logify standard output: $!\n";
  print "Something that needs a time!\n";
 
@@ -243,9 +254,9 @@ This would probably be the most common use:
 
  #!/usr/bin/perl
  use PerlIO::via::Logger format => 'Logtastic: ';
- open (OUT, ">&via(Logger)", 'foo.log')
+ open (OUT, ">:via(Logger)", 'foo.log')
    or die "Unable to open foo.log: $!\n";
- print "The format string does not need any time variables.";
+ print OUT "The format string does not need any time variables.";
 
 Would output the following into the file 'foo.log'
 
@@ -254,12 +265,11 @@ Would output the following into the file 'foo.log'
 =head1 SEE ALSO
 
 L<PerlIO::via> and any other PerlIO::via modules on CPAN.
-L<POSIX>
-man 3 strftime
+L<POSIX> and C<man 3 strftime> on your system.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2007 Adam J Kaplan. All rights reserved.
+Copyright (c) 2007 B<Adam J Kaplan>. All rights reserved.
 Based on snippets of code from Elizabeth Mattijsen's PerlIO::via modules.
 This library is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.
