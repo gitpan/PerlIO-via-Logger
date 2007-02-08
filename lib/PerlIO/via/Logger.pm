@@ -7,7 +7,7 @@
 #
 package PerlIO::via::Logger;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 use strict;
 use warnings;
 use POSIX qw(strftime);
@@ -156,12 +156,12 @@ line of output or input.  This module was created because I frequently need to
 use file logging systems in daemon-style Perl systems.  This module was created 
 to fulfill three requirements:
 
-=over 4
+'=over 4'
 =item 1. 
 Must be low overhead/fast
-=item 2. 
+=item 2.'
 Must be extremely simple to use (i.e. print "something to log\n")"
-=item 3. 
+=item 3.' 
 Must be able to add a prefix to each line (namely time)
 =back
 

@@ -16,8 +16,8 @@ use Test::More tests => 13;
 BEGIN { use_ok('PerlIO::via::Logger') }
 
 can_ok( 'PerlIO::via::Logger',qw(format logify) );
-PerlIO::via::Logger->format('[%d]');
-is( PerlIO::via::Logger->format,'[%d]',	'check format' );
+PerlIO::via::Logger->format('[%02d]');
+is( PerlIO::via::Logger->format,'[%02d]',	'check format' );
 
 my $file = 'testlog.f';
 
@@ -36,7 +36,7 @@ ok( close($out),			'closing file' );
 # Check the file we just made without using the io layer
 
 my @datetime = localtime(time);
-my $daynum = $datetime[3];
+my $daynum = sprintf("%02d", $datetime[3]);
 my $teststring = "[$daynum]Some Line\n[$daynum]Another Line\n";
 
 {

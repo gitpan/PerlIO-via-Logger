@@ -1,10 +1,19 @@
 Revision history for PerlIO-via-Logger
 
+0.03    Feb 8, 2007
+	- Corrected bug in test file that would occur during the first 9 days
+	of each month.  During the 1st-9th localtime(time) returns days with
+	a leading zero.  The 0 is then stripped out (correctly) by my test
+	formatting string of "%d" resulting in a string mismatch later.
+	The new format is "%02d" and localtime(time) is run though sprintf
+	just in case.
+	- Corrected trivial Pod tag that was causing failures for 3 CPAN testers
+
 0.02    Jan 24, 2007
-				Stripped out funky code form logify. It now uses binmode() to insert
-				  the layer gracefully... sans funk.
-				Clarified a few points of the POD
+	- Stripped out funky code form logify. It now uses binmode() to insert
+  	the layer gracefully... sans funk.
+	- Clarified a few points of the POD
 
 0.01    Jan 24, 2007
-        Initial version, released on an unsuspecting world. Muhaha.
+        - Initial version, released on an unsuspecting world. Muhaha.
 
