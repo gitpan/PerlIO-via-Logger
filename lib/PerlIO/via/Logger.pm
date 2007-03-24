@@ -7,7 +7,7 @@
 #
 package PerlIO::via::Logger;
 
-$VERSION = '0.03';
+$VERSION = '1.01';
 use strict;
 use warnings;
 use POSIX qw(strftime);
@@ -156,18 +156,19 @@ line of output or input.  This module was created because I frequently need to
 use file logging systems in daemon-style Perl systems.  This module was created 
 to fulfill three requirements:
 
-'=over 4'
-=item 1. 
-Must be low overhead/fast
-=item 2.'
-Must be extremely simple to use (i.e. print "something to log\n")"
-=item 3.' 
-Must be able to add a prefix to each line (namely time)
+=over 4
+
+=item 1. Must be low overhead/fast
+
+=item 2. Must be simple to use (i.e. print "something to log\n")
+
+=item 3. Must be able to add a prefix to each line (times in my case)
+
 =back
 
-I<Note: the format string accepts the format specification of strftime(3) on 
-your system.  You may use the command "man 3 strftime" to view the system-
-specific behavior, or try this one: http://www.hmug.org/man/3/strftime.php>
+I<Note: the format string accepts the format specification of strftime(3) on your system.  You may use the command "man 3 strftime" to view the 
+behavior of strftime on your system. Or see this page: 
+L<http://www.hmug.org/man/3/strftime.php>>
  
 =head1 CLASS METHODS
 
@@ -222,10 +223,6 @@ what you are doing.>
 
 I<This method is required for PerlIO modules.  Do NOT use it unless you know
 what you are doing.>
- 
-=head1 REQUIRED MODULES
-
-L<POSIX>
 
 =head1 EXAMPLES
 
@@ -262,12 +259,49 @@ Would output the following into the file 'foo.log'
 
  Logtastic: The format string does not need any time variables.
 
+=head1 DEPENDANCIES
+
+This module is free of any dependancies beyond what is included by default
+with the version of Perl I used to create and test it, version 5.8.6.
+
+=head2 Required Modules
+
+L<POSIX>
+
+=head2 Optional Testing Dependancies
+
+L<Pod::Simple>
+L<Test::Pod::Coverage>
+
+The Pod tests that are included with this distribution require the two
+modules listed above. However, running the test suite is optional, and the 
+test scripts will not break if these modules are missing.
+
+=head1 BUGS, LIMITATIONS AND FEATURE REQUESTS
+
+=head2 Known Bugs and Limitations
+
+None at this time.
+
+=head2 Reporting Bugs
+
+Please report any bugs and/or feature requests to
+C<bug-PerlIO-via-Logger at rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=PerlIO-via-Logger>.
+Be as detailed as possible when describing problems.  The RT system will
+notify me automatically and keep you updated as we work to resolve your
+issue.
+
 =head1 SEE ALSO
 
 L<PerlIO::via> and any other PerlIO::via modules on CPAN.
 L<POSIX> and C<man 3 strftime> on your system.
 
-=head1 COPYRIGHT
+=head1 AUTHOR
+
+Adam J. Kaplan <akaplan at cpan.org>
+
+=head1 LICENSE AND COPYRIGHT
 
 Copyright (c) 2007 B<Adam J Kaplan>. All rights reserved.
 Based on snippets of code from Elizabeth Mattijsen's PerlIO::via modules.

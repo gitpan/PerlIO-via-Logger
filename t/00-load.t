@@ -6,4 +6,4 @@ BEGIN {
 	use_ok( 'PerlIO::via::Logger' );
 }
 
-diag( "Testing PerlIO::via::Logger $PerlIO::via::Logger::VERSION, Perl $], $^X" );
+#diag( "Testing PerlIO::via::Logger $PerlIO::via::Logger::VERSION, Perl $], $^X" );

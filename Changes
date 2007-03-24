@@ -1,5 +1,18 @@
 Revision history for PerlIO-via-Logger
 
+1.01    Mar 24, 2007
+	- [critial] The first fix from version 0.03 incorrectly included 
+		printf style formatting in the strftime format string.  As a result
+		the module would fail pre-install tests.  This has been corrected.
+	- [normal] This distro has been stable for me since Jan 07, a 1 has been
+		added to the version number.
+	- [trivial] Cleaned up the broken =over ... =back Pod list
+	- [trivial] Added a bunch of additional information to the Pod
+		documentation, including a link to the RT queue.
+
+1.0			Mar 24, 2007
+	- [normal] Placeholder, Module now stable and production-safe
+
 0.03    Feb 8, 2007
 	- Corrected bug in test file that would occur during the first 9 days
 	of each month.  During the 1st-9th localtime(time) returns days with
